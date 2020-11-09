@@ -18,26 +18,26 @@ To best be able to answer my question above I decided to split my dataset into c
 
 ![image](images/topcomp.png)
 
-Once I had the customer and company dataframes I needed to work on finding the flow of conversations:
+Once I had the customer and company dataframes I needed to work on finding the flow of conversation:
 <p><p>
 
 - ``` Customer Message1 ``` The very first customer message to the company
 - ``` Company Message1 ``` The companies response to the message above
 - ``` Customer Message2 ``` The customer's response to the message above
 
-I started by looking at the customer dataset to find **Customer Message1** by looking for all tweets that have ``` NaN ``` in ```in_response_to_tweet_id```. Then from there, we can look at the corresponding ```response_tweet_id``` then match those in the Company dataframe under ```tweet_id``` and that will give us **Company Message1**. Next, we match the ```response_tweet_id``` to the ```tweet_id``` back in the customer dataframe to find **Customer Message2**.
+I started by looking at the customer dataset to find **Customer Message1** by looking for all tweets that have ``` NaN ``` in ```in_response_to_tweet_id``` telling me that this is the very first message in the conversation (visual below in red). Then from there, we can look at the corresponding ```response_tweet_id``` then match those in the Company dataframe under ```tweet_id``` and that will give us **Company Message1** (visual below in blue). Next, we match the ```response_tweet_id``` to the ```tweet_id``` back in the customer dataframe to find **Customer Message2** (visual below in green).
 ![image](images/tweetflow.png)
 ### Dates
 Looking at the dates of these tweets our dataset has a range of dates from 2008 to 2018, when looking at the scatter plot of tweets we can see the majority of our dataset is at the end of the 2017 year.
 ![image](images/byday1.png)
 
-When we take a closer at just dates from September 2017 and on we can see the spread much better.
+When we take a closer at just dates from September 2017 and on we can see the spread much better, and better understand that the majority of conversations are happening in this timeframe.
 ![image](images/byday2.png)
 
 ## Sentiment Analysis
 With many different choices available to use for sentiment analysis I needed to find something that could use our unlabeled text and classify each Tweet as positive, neutral, or negative. I decided to use the [VADER]([[https://github.com/cjhutto/vaderSentiment](https://github.com/cjhutto/vaderSentiment)) library. VADER stands for Valence Aware Dictionary for sEntiment Reasoning (they really forced the E to work there) and is specifically tuned for social media expressions.
 
-What makes VADER special is its ability to use text sentiment and be sensitive to both polarity and intensity of emotion in text. It is able to recognize that “happy” has a different meaning than when it is paired with “not” and it can also understand the emphasis of capitalization in words and differentiate “LOVE” from “love” in its final score of that word. For that purpose I choose not to lowercase my text or use any other preprocessing techniques. 
+What makes VADER special is its ability to use text sentiment and be sensitive to both polarity and intensity of emotion in text. It is able to recognize that “happy” has a different meaning than when it is paired with “not” and it can also understand the emphasis of capitalization in words and differentiate “LOVE” from “love” in its final score of that word. For that purpose I choose not to lowercase my text, remove punctuation, or use any other other preprocessing techniques. 
 
 ### About the scoring system in VADER:
 Each tweet is given a percentage of being “negative” “neutral” or “positive” and also a "compound score." The compound score is computed by summing the valence scores of each word in the lexicon, adjusted according to the rules, and then normalized to be between -1 (most extreme negative) and +1 (most extreme positive). This is the most useful metric if you want a single unidimensional measure of sentiment for a given sentence. Calling it a 'normalized, weighted composite score' is accurate. *[CREDIT](https://github.com/cjhutto/vaderSentiment#about-the-scoring)
@@ -67,7 +67,7 @@ We will set an alpha level of 0.05 to determine if we will accept or reject the 
 ### Recap:
 | Tweets in Customer Message1 | Tweets in Customer Message2 |
 :--: | :--: 
-| 261,052 | 309.236 |  
+| 261,052 | 309,236 |  
 
 | Avg Compound Score Message1 | Average Compound Score Message2 |
 :--: | :--: 
@@ -76,4 +76,4 @@ We will set an alpha level of 0.05 to determine if we will accept or reject the 
 ### p-value results = 0.0 
 
 ## Conclusions
-With our p-value being 0.0 we will **reject the null hypothesis** that stated "After the company responds to message 1 from the customer, the second message from the customer will have an increase in positive sentiment." I will acknowledge that yes, there is a different in the mean compound scores between message 1 and message 2; however, the difference is not significant.
+With our p-value being 0.0 and lower than our established alpha level of 0.05 we will **reject the null hypothesis** that stated "After the company responds to message 1 from the customer, the second message from the customer will have an increase in positive sentiment." I will acknowledge that yes, there is a different in the mean compound scores between message 1 and message 2; however, the difference is not significant.
