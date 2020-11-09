@@ -19,9 +19,9 @@ To best be able to answer my question above I decided to split my dataset into c
 Once I had the customer and company dataframes I needed to work on finding the flow of converstations:
 <p><p>
 
-- ``` Customer Message1: ``` The very first customer message to the company
-- ``` Company Message1: ``` The companies response to message above
-- ``` Customer Message2: ``` The customer's response to message above
+- ``` Customer Message1 ``` The very first customer message to the company
+- ``` Company Message1 ``` The companies response to message above
+- ``` Customer Message2 ``` The customer's response to message above
 
 We start by looking at the customer dataset and find **Customer Message1** by looking for all tweets that have ``` NaN ``` in ```in_response_to_tweet_id```. Then from there we can look at the corresponding ```response_tweet_id``` then match those in the Company dataframe under ```tweet_id``` and that will give us **Company Message1**. Next we match the ```response_tweet_id``` to the ```tweet_id``` back in the customer dataframe to find **Customer Message2**.
 ![image](images/tweetflow.png)
@@ -32,12 +32,9 @@ Looking at the dates of these tweets our dataset has a range of dates from 2008 
 When we take a closer at just dates from September 2017 and on we can see the spread much better.
 ![image](images/byday2.png)
 
-One major question I had, was how fast are companies responding on Twitter? I looked at the time
+One major question I had, was how fast are companies responding on Twitter? I looked at the time.
 
-Look at company_df find the time created for the tweet they are responding to, find the difference in time
-Find the average response find
-Group by companies that fall below that and above
-Is there a difference?
+**TO DO**
 
 ## Sentiment Analysis
 With many different choices available to use for sentiment analysis I needed to find something that could use our unlabeled text and classify each Tweet as positive, neutral, or negative. I decided to use the [VADER]([[https://github.com/cjhutto/vaderSentiment](https://github.com/cjhutto/vaderSentiment)) library. VADER stands for Valence Aware Dictionary for sEntiment Reasoning (they really forced the E to work there) and is specifically tuned for social media expressions.
@@ -47,10 +44,16 @@ What makes VADER special is its ability to use text sentiment and be sensitive t
 ### About the scoring system in VADER:
 Each tweet is given a percentage of being “negative” “neutral” or “positive” and also a "compound score." The compound score is computed by summing the valence scores of each word in the lexicon, adjusted according to the rules, and then normalized to be between -1 (most extreme negative) and +1 (most extreme positive). This is the most useful metric if you want a single unidimensional measure of sentiment for a given sentence. Calling it a 'normalized, weighted composite score' is accurate. *[CREDIT](https://github.com/cjhutto/vaderSentiment#about-the-scoring)
 
+We can view the compound score of each tweet with Customer Message1 in blue and Customer Message2 (after the company responded) in green.
+
+![image](images/compound-hist.png)
+
 ## Text Analysis
-- Visual of top 10 words Customer 1, Company, Customer 2
-- Visual of top 10 bigram words Customer 1, Company, Customer 2
-- Top 5 companies, what are there top words 
+Next we will explore the top words used in each Customer message.
+![image](images/topwords1.png)
+![image](images/topwords2.png)
+![image](images/bigram1.png)
+![image](images/bigram2.png)
 
 ## Hypothesis Testing
 I decided to conduct a series of hypothesis tests to determine the following:
