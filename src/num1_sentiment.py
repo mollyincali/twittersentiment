@@ -53,13 +53,11 @@ def make_start():
     return start_df, start_id
 
 def get_tweet_id(company_df, company_response, start_id):
-    """[summary]
-
+    """ Finds and returns tweet_id for customer message1, company message1, customer message2
     Args:
         company_df [dataframe]: Masked dataframe of only company 
         company_response [array]: Array of all tweet_ids from a company
         start_id [array]: Array of tweet_id that start a conversation
-
     Returns:
         [array]: Array of twee_id message 1 from 
         [array]: Array of tweet_id with company response to message 1
@@ -95,7 +93,7 @@ def get_tweet_id(company_df, company_response, start_id):
     return cust_message1, company_outreach1, cust_message2
 
 def df_for_sent(tweet_ids):
-    """ Return a dataframe ready for sentiment analysis
+    """ Returns dataframe ready for sentiment analysis
     Args:
         [array]: Array of unique tweet_id
     Returns:
@@ -133,7 +131,7 @@ if __name__ == '__main__':
     # cust_sent1.to_json('../data/custsent1.json')
     # cust_sent2.to_json('../data/custsent2.json')   
 
-    #-- GRAPH
+    #-- GRAPHS
     make_hist(cust_sent1, cust_sent2)
     make_date_line(company_df, customer_df)
     make_date_line(company_df, customer_df, 2)
