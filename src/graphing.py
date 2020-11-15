@@ -9,6 +9,11 @@ import matplotlib.pyplot as plt
 sns.set()
 
 def make_hist(df1, df2):
+    """ Creates graph of Number of Tweets & Compound Score
+    Args:
+        df1 ([dataframe]): Dataframe of customer message1
+        df2 ([dataframe]): Dataframe of customer message2
+    """
     fig, ax = plt.subplots(figsize = (20,10))
     
     ax.hist(df1['compound'], bins = 50, 
@@ -22,6 +27,12 @@ def make_hist(df1, df2):
     plt.show();
 
 def make_date_line(company_df, customer_df, graph = None):
+    """ Graphs the spread of tweets by day
+    Args:
+        company_df ([dataframe]): Company dataframe
+        customer_df ([dataframe]): Customer dataframe
+        graph ([int], optional): Which graph to create
+    """
     comp_dates = company_df.created_at.dt.date
     cus_dates = customer_df.created_at.dt.date
     
@@ -56,6 +67,11 @@ def make_date_line(company_df, customer_df, graph = None):
         plt.show();
 
 def top_word_bar(tuple_list, title):
+    """ Graphs top words and bigrams
+    Args:
+        tuple_list ([tuple]): Tuple of top word or bigrams 
+        title ([str]): What to title the graph
+    """
     words = []
     num = []
     
@@ -70,6 +86,29 @@ def top_word_bar(tuple_list, title):
     ax.set_xlabel('Number of Occurrences', fontsize = 20)
     ax.set_ylabel('Top Words', fontsize = 20)
     plt.show()
+
+# def company_time_compound(bycomp):
+#     """Creates graph of company and their average response rate and average compound score from customers 
+#     Args:
+#         None
+#     """
+#     x = bycomp['author_id']
+#     bycomp.sort_values(by = 'diffmin', ascending = True, inplace = True)
+
+#     fig, ax1 = plt.subplots(figsize = (20,10))
+#     ax1.set_xlabel('Company', fontsize = 20)
+#     ax1.set_xticks([])
+#     ax1.set_ylabel('Minutes to Respond', fontsize = 20)
+#     ax1.scatter(x, bycomp['diffmin'], color = 'blue')
+#     ax1.tick_params(axis = 'y')
+    
+#     ax2 = ax1.twinx()
+#     ax2.set_xticks([])
+#     ax2.set_ylabel('Compound Sentiment Score from Customer Message2', fontsize = 20)
+#     ax2.scatter(x, bycomp['compound'], color = 'green')
+#     ax2.tick_params(axis='y')
+#     plt.title('Company Average Response Time and Average Compound Sentiment', fontsize = 30)
+#     plt.show();
 
 if __name__ == "__main__":
     pass
