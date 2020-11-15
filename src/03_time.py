@@ -25,22 +25,29 @@ def get_time_df(cust_sent1, company):
     time['created_at_y'] = time['created_at_y'].dt.tz_localize(None)
     time['diff'] = time['created_at_y'] - time['created_at_x']
     time['diffmin'] = time['diff'].astype('timedelta64[m]')
-    return time 
+    
+    avg_comp_response = time.groupby('author_id').agg({"diffmin":"mean"}).reset_index()
+    return time_df, avg_comp_response
+
+def get_message2(cust_sent2):
+    mess2_tweets = list(cust_sent2.tweet_id) 
+    mess2 = company[company['in_response_to_tweet_id'].isin(mess2_tweets)][['author_id','in_response_to_tweet_id']] 
+    mess2 = pd.merge(cust_sent2, mess2, how = 'inner', left_on = 'tweet_id', right_on = 'in_response_to_tweet_id') 
+    message2 = sent_mess2.groupby('author_id').agg({'compound':'mean'}).reset_index()
+    return message2
 
 if __name__ == "__main__":
     #-- DF SETUP
     cust_sent1 = pd.read_json("../data/custsent1.json")
     cust_sent2 = pd.read_json("../data/custsent2.json")
     company = pd.read_json('../data/company.json')
-    time = get_time_df(cust_sent1, company)
-    avg_comp_response = time.groupby('author_id').agg({"diffmin":"mean"}).reset_index()
+    cust = pd.read_json('../data/customer.json')
     
-
-
-    company_df['response_tweet'] = test['response_tweet_id'].str.split(",", n = 3, expand = True)
+    time, avg_comp_response = get_time_df(cust_sent1, company)
+    message2 = get_message2(cust_sent2)
 
     #-- GRAPH
-    # company_time_compound(avg_comp_response)
+    company_time_compound(avg_comp_response, message2)
 
     top10 = ['AmazonHelp', 'AppleSupport', 'Uber_Support', 'SpotifyCares', 'Deblta', 
             'Tesco', 'AmericanAir', 'TMobileHelp', 'comcastcares', 'British_Airways']
