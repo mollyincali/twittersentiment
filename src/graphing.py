@@ -87,28 +87,23 @@ def top_word_bar(tuple_list, title):
     ax.set_ylabel('Top Words', fontsize = 20)
     plt.show()
 
-def company_time_compound(bycomp, sent_mess2):
-    """Creates graph of company and their average response rate and average compound score from customers 
+def company_response_time(df, xlabel = False):
+    """Graph the average response time by company
     Args:
-        None
+        df ([df]): dataframe to use
+        xlabel (bool, optional): Use false for all companies, True for top 10
     """
-    x = bycomp['author_id']
-    bycomp.sort_values(by = 'diffmin', ascending = True, inplace = True)
+    fig, ax = plt.subplots(figsize = (20,10))
+    ax.bar(df['author_id'], df['diffmin'], color = 'green')
+    ax.set_title('Average Response in Minutes by Company', fontsize = 30)
+    ax.set_xlabel('Company', fontsize = 20)
+    ax.set_ylabel('Average Minutes to Respond', fontsize = 20)
 
-    fig, ax1 = plt.subplots(figsize = (20,10))
-    ax1.set_xlabel('Company', fontsize = 20)
-    ax1.set_xticks([])
-    ax1.set_ylabel('Minutes to Respond', fontsize = 20)
-    ax1.scatter(x, bycomp['diffmin'], color = 'blue')
-    ax1.tick_params(axis = 'y')
-    
-    ax2 = ax1.twinx()
-    ax2.set_xticks([])
-    ax2.set_ylabel('Compound Sentiment Score from Customer Message2', fontsize = 20)
-    ax2.scatter(x, tempdf['compound'], color = 'green')
-    ax2.tick_params(axis='y')
-    plt.title('Company Average Response Time and Average Compound Sentiment', fontsize = 30)
-    plt.show();
+    if xlabel == False:
+        ax.xaxis.set_ticks([])
+    else:
+        ax.set_xticklabels(df['author_id'], rotation = 45)
+    plt.show()    
 
 if __name__ == "__main__":
     pass
